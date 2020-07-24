@@ -20,7 +20,7 @@ def predict():
     # As the The training data was dummified one, so we have to pass the 
     # test data in the same format ('hour','is_holiday','day_of_week')
     
-    data.append(item[0])
+    data.append(int(item[0]))
     
     # is holiday
     if item[1] == 'Yes':
@@ -95,10 +95,12 @@ def predict():
         data.append(0)
         data.append(1)
     
-    prediction = np.round(model.predict([data])[0])
+    #data = [12, 0, 1, 0, 0, 0, 1, 0, 0, 0]
+    prediction = int(model.predict([data])[0])
+    #prediction = 150
 
-    
-    return render_template('home.html',pred='Total Bike ride counts for the day will be {}'.format(prediction))
+
+    return render_template('home.html',pred='Total Bike ride counts on {} at {}:00 Hrs will be {}'.format(item[2], item[0],prediction))
 
 
 
@@ -106,9 +108,13 @@ def predict():
 #def predict_api():
 #    data = request.get_json(force=True)
 #    data_unseen = pd.DataFrame([data])
-#    prediction = predict_model(model, data=data_unseen)
+#    prediction = prediction = np.round(model.predict([data_unseen])[0])
 #    output = prediction.Label[0]
 #    return jsonify(output)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=config.PORT, debug=config.DEBUG_MODE)
+
+
+#if __name__ == "__main__":
+#    app.run(debug=True)
